@@ -1,0 +1,21 @@
+{
+  "name": "ai-whatsapp-assistant",
+  "version": "1.0.0",
+  "description": "this project is based on ai whatsapp business assistant",
+  "license": "ISC",
+  "author": "Muhammad Atif khan",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx nodemon src/App.js",
+    "start": "npm node src/App.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "axios": "^1.14.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.3.1",
+    "express": "^5.2.1",
+    "mongoose": "^9.3.3"
+  }
+}
