@@ -2,10 +2,13 @@
 const express = require('express');
 const Connectdb = require('./lib/db');
 const fetch = require('node-fetch'); // npm install node-fetch@2
+const WhatsApp = require('./routes/whatsapp');
 require('dotenv').config();
 
 const app = express();
 app.use(express.json());
+
+app.use('/' , WhatsApp)
 
 const VERIFY_TOKEN = process.env.VERIFY_TOKEN;
 
@@ -40,46 +43,10 @@ async function sendReply(to, message) {
     }
 }
 
-// GET /webhook for verification
-app.get("/webhook", (req, res) => {
-    const mode = req.query["hub.mode"];
-    const tokenReceived = req.query["hub.verify_token"];
-    const challenge = req.query["hub.challenge"];
 
-    if (mode && tokenReceived === VERIFY_TOKEN) {
-        console.log("Webhook verified!");
-        res.status(200).send(challenge);
-    } else {
-        res.sendStatus(403);
-    }
-});
 
 // POST /webhook to receive messages
-app.post("/webhook", async (req, res) => {
-    // Always respond 200 OK immediately
-    res.sendStatus(200);
 
-    const entries = req.body.entry || [];
-    for (const entry of entries) {
-        const changes = entry.changes || [];
-        for (const change of changes) {
-            const messages = change.value?.messages || [];
-            for (const msg of messages) {
-                // Ignore messages sent by your own WhatsApp number (avoid reply loop)
-                if (msg.from === phoneNumberId) continue;
-
-                // Only reply to text messages
-                if (!msg.text?.body) continue;
-
-                console.log("From:", msg.from);
-                console.log("Message:", msg.text.body);
-
-                // Send automatic reply
-                await sendReply(msg.from, "Hello! I got your message.");
-            }
-        }
-    }
-});
 
 // Connect DB and start server
 Connectdb()
