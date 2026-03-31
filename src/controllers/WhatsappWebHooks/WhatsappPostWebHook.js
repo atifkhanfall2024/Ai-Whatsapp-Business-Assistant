@@ -1,5 +1,6 @@
 const sendReply = require('../../helpers/WhatsappSendReply')
 const AICall = require('../../services/GeminiApi')
+const MessageModel = require('../../models/messages')
 const PostWebHook =  async (req, res) => {
     const phoneNumberId = process.env.phoneid
     // Always respond 200 OK immediately
@@ -19,6 +20,14 @@ const PostWebHook =  async (req, res) => {
 
                 console.log("From:", msg.from);
                 console.log("Message:", msg.text.body);
+
+               await MessageModel.create({
+                    customer_id:msg.from,
+                    message:msg.text.body ,
+                    type:"inbound"
+                })
+               
+
                 const res =  await AICall(msg.text.body)
                // console.log(res.content);
                 // Send automatic reply
