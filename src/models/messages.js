@@ -11,6 +11,9 @@ const MessageSchema = new mongoose.Schema({
         type:String,
         required:[true , "Message required"]
     },
+    botMessage:{
+     type:String,
+    },
 
     type:{
         type:String,
