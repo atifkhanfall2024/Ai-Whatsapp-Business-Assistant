@@ -1,7 +1,7 @@
 const OpenAI = require('openai')
 require('dotenv').config()
 
-const AICall = async(message)=>{
+const AICall = async(message , text)=>{
 try {
     const openai = new OpenAI({
     apiKey: process.env.GEMINI,
@@ -12,11 +12,11 @@ const response = await openai.chat.completions.create({
     model: "gemini-3-flash-preview",
     messages: [
         {   role: "system",
-            content: "You are a helpful assistant. you main aim is to handle user messages you work as an ai whatsapp business assistant to handle and manage user orders , your message is short and look professional" 
+            content: message
         },
         {
             role: "user",
-            content: message,
+            content: text,
         },
     ],
 });
